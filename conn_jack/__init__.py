@@ -95,7 +95,7 @@ class _JackConnectionManager():
 
 	client = None
 
-	def __init__(self, client_name = 'conn-man'):
+	def __init__(self, *, client_name = 'conn-man'):
 		status = jacklib.jack_status_t()
 		self.client = jacklib.client_open(client_name, jacklib.JackNoStartServer, status)
 		if status.value:
@@ -136,7 +136,7 @@ class _JackConnectionManager():
 	# ------------------------------
 	# Port / connection info funcs
 
-	def get_ports(self, flags = 0, port_name_pattern = ''):
+	def get_ports(self, flags = 0, *, port_name_pattern = ''):
 		"""
 		Returns a list of JackPort objects which match the given flags (if any).
 		The available flags from jacklib/api.py:
@@ -181,7 +181,7 @@ class _JackConnectionManager():
 			if jacklib.port_connected(port.ptr) \
 			else []
 
-	def get_connections(self, ports = None):
+	def get_connections(self, *, ports = None):
 		"""
 		Generator which yields tuples of JackPort, JackPort.
 		"""
