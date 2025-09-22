@@ -1,6 +1,6 @@
 #  conn_jack/__init__.py
 #
-#  Copyright 2025 liyang <liyang@veronica>
+#  Copyright 2025 Leon Dionne <ldionne@dridesign.sh.cn>
 #
 """
 Classes for managing jack client connections.
@@ -170,6 +170,9 @@ class _JackConnectionManager():
 		return JackPort(ptr, jacklib.port_name(ptr))
 
 	def get_client_ports(self, client_name):
+		"""
+		Returns a list of JackPort objects registered to the client with the given "client_name".
+		"""
 		return self.get_ports(port_name_pattern = f'{client_name}:*')
 
 	def get_port_connections(self, port):

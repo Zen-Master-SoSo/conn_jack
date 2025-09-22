@@ -1,6 +1,6 @@
 #  conn_jack/qt.py
 #
-#  Copyright 2025 liyang <liyang@veronica>
+#  Copyright 2025 Leon Dionne <ldionne@dridesign.sh.cn>
 #
 """
 PyQt wrapper for using JackConnectionManager in Qt applications.

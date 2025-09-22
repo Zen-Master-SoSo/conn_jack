@@ -1,6 +1,6 @@
 #  conn_jack/test/console_test.py
 #
-#  Copyright 2025 liyang <liyang@veronica>
+#  Copyright 2025 Leon Dionne <ldionne@dridesign.sh.cn>
 #
 """
 Test to be run from the console, testing the non-Qt JackConnectionManager

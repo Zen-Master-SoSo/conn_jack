@@ -1,6 +1,6 @@
 #  conn_jack/test/qt_test.py
 #
-#  Copyright 2025 liyang <liyang@veronica>
+#  Copyright 2025 Leon Dionne <ldionne@dridesign.sh.cn>
 #
 """
 Creates a test window and displays jack port changes
