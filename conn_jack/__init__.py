@@ -21,6 +21,13 @@ from log_soso import log_error
 
 __version__ = "1.2.1"
 
+JACK_PORT_IS_CV = jacklib.JackPortIsControlVoltage
+JACK_PORT_IS_INPUT = jacklib.JackPortIsInput
+JACK_PORT_IS_OUTPUT = jacklib.JackPortIsOutput
+JACK_PORT_IS_PHYSICAL = jacklib.JackPortIsPhysical
+JACK_PORT_IS_TERMINAL = jacklib.JackPortIsTerminal
+
+
 
 class JackPort:
 
@@ -39,15 +46,15 @@ class JackPort:
 
 	@cached_property
 	def is_physical(self):
-		return self.flags & jacklib.JackPortIsPhysical
+		return self.flags & JACK_PORT_IS_PHYSICAL
 
 	@cached_property
 	def is_input(self):
-		return self.flags & jacklib.JackPortIsInput
+		return self.flags & JACK_PORT_IS_INPUT
 
 	@cached_property
 	def is_output(self):
-		return self.flags & jacklib.JackPortIsOutput
+		return self.flags & JACK_PORT_IS_OUTPUT
 
 	@property
 	def client_name(self):
@@ -136,7 +143,7 @@ class _JackConnectionManager():
 	# ------------------------------
 	# Port / connection info funcs
 
-	def get_ports(self, flags = 0, *, port_name_pattern = ''):
+	def get_ports(self, flags = 0, *, port_name_pattern = '') -> list:
 		"""
 		Returns a list of JackPort objects which match the given flags (if any).
 		The available flags from jacklib/api.py:
@@ -155,14 +162,14 @@ class _JackConnectionManager():
 				jacklib.get_ports(self.client, port_name_pattern, '', flags))
 		]
 
-	def get_port_by_name(self, name):
+	def get_port_by_name(self, name) -> JackPort:
 		"""
 		Returns JackPort object.
 		"""
 		ptr = jacklib.port_by_name(self.client, name)
 		return JackPort(ptr, name)
 
-	def get_port_by_id(self, port_id):
+	def get_port_by_id(self, port_id) -> JackPort:
 		"""
 		Returns JackPort object.
 		"""
@@ -175,7 +182,7 @@ class _JackConnectionManager():
 		"""
 		return self.get_ports(port_name_pattern = f'{client_name}:*')
 
-	def get_port_connections(self, port):
+	def get_port_connections(self, port: JackPort) -> list:
 		"""
 		Returns a list of JackPort objects.
 		"""
@@ -183,6 +190,12 @@ class _JackConnectionManager():
 			for port_name in jacklib.port_get_all_connections(self.client, port.ptr) ] \
 			if jacklib.port_connected(port.ptr) \
 			else []
+
+	def get_port_connections_names(self, port: JackPort) -> list:
+		"""
+		Returns a list of JackPort objects.
+		"""
+		return jacklib.port_get_all_connections(self.client, port.ptr)
 
 	def get_connections(self, *, ports = None):
 		"""
@@ -195,43 +208,43 @@ class _JackConnectionManager():
 				for port_name in jacklib.port_get_all_connections(self.client, port.ptr):
 					yield((port, self.get_port_by_name(port_name)))
 
-	def input_ports(self):
+	def input_ports(self) -> list:
 		"""
 		Returns a list of JackPort objects.
 		"""
-		return self.get_ports(jacklib.JackPortIsInput)
+		return self.get_ports(JACK_PORT_IS_INPUT)
 
-	def output_ports(self):
+	def output_ports(self) -> list:
 		"""
 		Returns a list of JackPort objects.
 		"""
-		return self.get_ports(jacklib.JackPortIsOutput)
+		return self.get_ports(JACK_PORT_IS_OUTPUT)
 
-	def physical_input_ports(self):
+	def physical_input_ports(self) -> list:
 		"""
 		Returns a list of JackPort objects.
 		"""
-		return self.get_ports(jacklib.JackPortIsInput | jacklib.JackPortIsPhysical)
+		return self.get_ports(JACK_PORT_IS_INPUT | JACK_PORT_IS_PHYSICAL)
 
-	def physical_output_ports(self):
+	def physical_output_ports(self) -> list:
 		"""
 		Returns a list of JackPort objects.
 		"""
-		return self.get_ports(jacklib.JackPortIsOutput | jacklib.JackPortIsPhysical)
+		return self.get_ports(JACK_PORT_IS_OUTPUT | JACK_PORT_IS_PHYSICAL)
 
-	def physical_playback_clients(self):
+	def physical_playback_clients(self) -> list:
 		"""
 		Returns a list of (str) client names.
 		"""
 		return list(set(port.client_name \
-			for port in self.get_ports(jacklib.JackPortIsInput | jacklib.JackPortIsPhysical) \
+			for port in self.get_ports(JACK_PORT_IS_INPUT | JACK_PORT_IS_PHYSICAL) \
 			if not port.is_midi))
 
-	def first_physical_playback_client(self):
+	def first_physical_playback_client(self) -> str:
 		"""
 		Returns (str) client name.
 		"""
-		for port in self.get_ports(jacklib.JackPortIsInput | jacklib.JackPortIsPhysical):
+		for port in self.get_ports(JACK_PORT_IS_INPUT | JACK_PORT_IS_PHYSICAL):
 			if not port.is_midi:
 				return port.client_name
 

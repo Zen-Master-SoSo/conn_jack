@@ -55,9 +55,9 @@ def main():
 	)
 
 	try:
-		conn_man = JackConnectionManager()
-	except JackConnectError:
-		print('Could not connect to JACK server. Is it running?')
+		conn_man = JackConnectionManager(client_name = 'conn-test')
+	except JackConnectError as e:
+		print(f'Could not connect to JACK server ({e})')
 		return 1
 
 	conn_man.on_error(on_error)
@@ -75,7 +75,13 @@ def main():
 	print('==== OUTPUT PORTS ====')
 	list_ports(conn_man.input_ports())
 	print()
-	print('==== CONNECTIONS =====')
+	print('==== CONNECTIONS BY NAME =====')
+	for port in conn_man.output_ports():
+		print(port.name)
+		for tgt in conn_man.get_port_connections_names(port):
+			print(f'  {tgt}')
+	print()
+	print('==== CONNECTIONS AS PORTS =====')
 	for port in conn_man.output_ports():
 		print(port.name)
 		for tgt in conn_man.get_port_connections(port):
