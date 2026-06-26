@@ -34,7 +34,7 @@ from jacklib.helpers import c_char_p_p_to_list
 from jacklib.helpers import get_jack_status_error_string
 from log_soso import log_error
 
-__version__ = "1.3.0"
+__version__ = "1.3.1"
 
 JACK_PORT_IS_CV = jacklib.JackPortIsControlVoltage
 JACK_PORT_IS_INPUT = jacklib.JackPortIsInput
