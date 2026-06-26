@@ -1,6 +1,21 @@
-#  conn_jack/__init__.py
+#  conn_jack/conn_jack/__init__.py
 #
-#  Copyright 2025 Leon Dionne <ldionne@dridesign.sh.cn>
+#  Copyright 2005-2026 Leon Dionne <ldionne@dridesign.sh.cn>
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
 #
 """
 Classes for managing jack client connections.
@@ -9,7 +24,7 @@ These differ from the JACK Client for Python (jack), in that it makes possible
 connecting and disconnecting ports which are not "owned" by a client created in
 your process.
 
-Utilizes "jacklib" for port access.
+Utilizes "jacklib" (distributed as "pyjacklib") for communicating to JACK.
 """
 import logging
 from functools import cached_property
@@ -409,4 +424,4 @@ class JackConnectionManager(_JackConnectionManager):
 				log_error(e)
 
 
-#  end kitbash/connection_manager.py
+#  end conn_jack/conn_jack/__init__.py
