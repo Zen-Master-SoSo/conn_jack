@@ -25,7 +25,7 @@ from conn_jack import JackConnectionManager, JackConnectError
 
 
 def on_error(error_message):
-	print(f'ERROR: {error_message}')
+	print(f'ERROR: "{error_message}"')
 
 
 def on_client_registration(client_name, action):

@@ -32,7 +32,6 @@ from queue import Queue
 import jacklib
 from jacklib.helpers import c_char_p_p_to_list
 from jacklib.helpers import get_jack_status_error_string
-from log_soso import log_error
 
 __version__ = "1.3.1"
 
@@ -364,26 +363,26 @@ class JackConnectionManager(_JackConnectionManager):
 	def _error_callback(self, error):
 		error_message = error.decode(jacklib.ENCODING, errors='ignore')
 		if self._cb_error is None:
-			logging.error(error_message)
+			logging.error(f'JACK Error "{error_message}"')
 		else:
 			try:
 				self._cb_error(error_message)
 			except Exception as e:
-				log_error(e)
+				logging.error(e)
 
 	def _client_registration_callback(self, client_name, action, *_):
 		if self._cb_client_registration is not None:
 			try:
 				self._cb_client_registration(client_name.decode(jacklib.ENCODING, errors='ignore'), action)
 			except Exception as e:
-				log_error(e)
+				logging.error(e)
 
 	def _port_registration_callback(self, port_id, action, *_):
 		if self._cb_port_registration is not None:
 			try:
 				self._cb_port_registration(self.get_port_by_id(port_id), action)
 			except Exception as e:
-				log_error(e)
+				logging.error(e)
 
 	def _port_connect_callback(self, port_a_id, port_b_id, connect, *_):
 		if self._cb_port_connect is not None:
@@ -394,7 +393,7 @@ class JackConnectionManager(_JackConnectionManager):
 					bool(connect)
 				)
 			except Exception as e:
-				log_error(e)
+				logging.error(e)
 
 	def _port_rename_callback(self, port_id, old_name, new_name, *_):
 		if self._cb_port_rename is not None:
@@ -405,7 +404,7 @@ class JackConnectionManager(_JackConnectionManager):
 					new_name.decode(jacklib.ENCODING, errors='ignore') if new_name else 'NO_NEW_NAME'
 				)
 			except Exception as e:
-				log_error(e)
+				logging.error(e)
 
 	def _xrun_callback(self, _):
 		self.xruns += 1
@@ -413,7 +412,7 @@ class JackConnectionManager(_JackConnectionManager):
 			try:
 				self._cb_xrun(self.xruns)
 			except Exception as e:
-				log_error(e)
+				logging.error(e)
 		return 0
 
 	def _shutdown_callback(self, *_):
@@ -421,7 +420,7 @@ class JackConnectionManager(_JackConnectionManager):
 			try:
 				self._cb_shutdown()
 			except Exception as e:
-				log_error(e)
+				logging.error(e)
 
 
 #  end conn_jack/conn_jack/__init__.py

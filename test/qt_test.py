@@ -49,9 +49,9 @@ class MainWindow(QMainWindow):
 		self.conn_man.sig_port_rename.connect(self.slot_port_rename)
 		self.conn_man.sig_shutdown.connect(self.slot_shutdown)
 
-	@pyqtSlot()
-	def slot_error(self, error):
-		self.text_box.insertPlainText(error)
+	@pyqtSlot(str)
+	def slot_error(self, error_message):
+		self.text_box.insertPlainText(f'ERROR: "{error_message}"')
 
 	@pyqtSlot(str, int)
 	def slot_client_registration(self, client_name, action):
