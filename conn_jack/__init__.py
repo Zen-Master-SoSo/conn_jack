@@ -97,6 +97,9 @@ class JackPort:
 		except ValueError:
 			return ('[error]', '[error]')
 
+	def __eq__(self, other):
+		return isinstance(other, JackPort) and self.name == other.name
+
 	def __str__(self):
 		return self.name
 
